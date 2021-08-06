@@ -33,7 +33,9 @@ As of August 3, 2021, the program can perform 5 different functions:
 4. Delete empty directories within a specified location.
 5. Delete all instances of a given file, by name.
 
-To run a function, execute the program (main method in "client" class) with command line arguments.
+The Library Management Tool is usable in two different ways. First, a "Client" class exists, which can run the functions using command line arguments. When using the jar file, this is how the program is executed. Second, if implementing the Library Management Tool into code, any of the individual functions and objects can be accessed individually, and a "LibraryManagementTool" class exists which can run each function centrally as methods. The latter of these code implementations is what I would personally recommend for usage.
+
+To use the Library Management Tool from the "Client" class or jar file, use the following command line arguments:
 1. "Gen_Arch"/"1"   [filepath of source location]   [filepath of archive destination]
 2. "Arch_Files"/"2"   [filepath of source location]   [filepath of archive destination]   [last modified date threshold]
 3. "Gen_SS"/"3"   [filepath of source location]   [filepath of output spreadsheet]   [number of threads to use]   ["old" date threshold]   *OPTIONAL*[red-highlighted "oldest" date threshold]   *OPTIONAL*[orange-highlighted "second-oldest" date threshold]   *OPTIONAL*[yellow-highlighted "newest-oldest" date threshold]

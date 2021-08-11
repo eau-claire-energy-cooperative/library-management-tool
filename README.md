@@ -33,7 +33,7 @@ As of August 3, 2021, the program can perform 5 different functions:
 4. Delete empty directories within a specified location.
 5. Delete all instances of a given file, by name.
 
-The Library Management Tool is usable in two different ways. First, a "Client" class exists, which can run the functions using command line arguments. When using the jar file, this is how the program is executed. Second, if implementing the Library Management Tool into code, any of the individual functions and objects can be accessed individually, and a "LibraryManagementTool" class exists which can run each function centrally as methods. The latter of these code implementations is what I would personally recommend for usage.
+The Library Management Tool is usable in two different ways. First, a "Client" class exists, which can run the functions using a GUI. When using the jar file, this is how the program is executed. Second, if implementing the Library Management Tool into code, any of the individual functions and objects can be accessed individually, and a "LibraryManagementTool" class exists which can run each function centrally as methods. The latter of these code implementations is what I would personally recommend for usage of that kind.
 
 To use the Library Management Tool from the "Client" class or jar file, use the following command line arguments:
 1. "Gen_Arch"/"1"   [filepath of source location]   [filepath of archive destination]

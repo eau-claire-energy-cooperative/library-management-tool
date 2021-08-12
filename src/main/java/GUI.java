@@ -1,11 +1,9 @@
 import com.formdev.flatlaf.FlatDarculaLaf;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,7 +18,7 @@ public class GUI implements ActionListener {
     ArrayList<JTextField> textFields;
     ArrayList<JLabel> resultLabels;
 
-    public GUI(LibraryManagementTool libraryManagementTool) throws IOException {
+    public GUI(LibraryManagementTool libraryManagementTool) {
 
         try {
             UIManager.setLookAndFeel(new FlatDarculaLaf());
@@ -69,12 +67,16 @@ public class GUI implements ActionListener {
 
     }
 
-    public void setFrame(JFrame frame) throws IOException {
+    public void setFrame(JFrame frame) {
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.setPreferredSize(new Dimension(800, 750));
-        frame.setIconImage(ImageIO.read(new File("Library Management Tool logo.jpg")));
+
+        java.net.URL imgURL = getClass().getResource("resources\\Library-Management-Tool-logo.jpg");
+        assert imgURL != null;
+        ImageIcon imageIcon = new ImageIcon();
+        frame.setIconImage(imageIcon.getImage());
 
         frame.pack();
         frame.setVisible(true);

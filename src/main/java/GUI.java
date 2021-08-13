@@ -216,7 +216,7 @@ public class GUI implements ActionListener {
         fieldsCons.gridx++;
         fieldsPanel.add(Box.createHorizontalStrut(10), fieldsCons);
         fieldsCons.gridx++;
-        JLabel dateThresholdLabel = new JLabel("YYYY-MM-DD");
+        JLabel dateThresholdLabel = new JLabel("\"Old\" date threshold (YYYY-MM-DD)");
         fieldsPanel.add(dateThresholdLabel, fieldsCons);
         fieldsCons.gridx = 0;
         fieldsCons.gridy++;
@@ -299,7 +299,7 @@ public class GUI implements ActionListener {
         fieldsCons.gridx++;
         fieldsPanel.add(Box.createHorizontalStrut(10), fieldsCons);
         fieldsCons.gridx++;
-        JLabel oldDateThresholdLabel = new JLabel("YYYY-MM-DD");
+        JLabel oldDateThresholdLabel = new JLabel("\"Old\" date threshold (YYYY-MM-DD)");
         fieldsPanel.add(oldDateThresholdLabel, fieldsCons);
         fieldsCons.gridx = 0;
         fieldsCons.gridy++;
@@ -313,7 +313,7 @@ public class GUI implements ActionListener {
         fieldsCons.gridx++;
         fieldsPanel.add(Box.createHorizontalStrut(10), fieldsCons);
         fieldsCons.gridx++;
-        JLabel numThreadsLabel = new JLabel("Enter integer value");
+        JLabel numThreadsLabel = new JLabel("Number of threads to use");
         fieldsPanel.add(numThreadsLabel, fieldsCons);
         fieldsCons.gridx = 0;
         fieldsCons.gridy++;
@@ -327,7 +327,7 @@ public class GUI implements ActionListener {
         fieldsCons.gridx++;
         fieldsPanel.add(Box.createHorizontalStrut(10), fieldsCons);
         fieldsCons.gridx++;
-        JLabel bottomDateThresholdLabel = new JLabel("YYYY-MM-DD");
+        JLabel bottomDateThresholdLabel = new JLabel("Bottom date threshold (YYYY-MM-DD)");
         fieldsPanel.add(bottomDateThresholdLabel, fieldsCons);
         fieldsCons.gridx = 0;
         fieldsCons.gridy++;
@@ -341,7 +341,7 @@ public class GUI implements ActionListener {
         fieldsCons.gridx++;
         fieldsPanel.add(Box.createHorizontalStrut(10), fieldsCons);
         fieldsCons.gridx++;
-        JLabel middleDateThresholdLabel = new JLabel("YYYY-MM-DD");
+        JLabel middleDateThresholdLabel = new JLabel("Middle date threshold (YYYY-MM-DD)");
         fieldsPanel.add(middleDateThresholdLabel, fieldsCons);
         fieldsCons.gridx = 0;
         fieldsCons.gridy++;
@@ -355,7 +355,7 @@ public class GUI implements ActionListener {
         fieldsCons.gridx++;
         fieldsPanel.add(Box.createHorizontalStrut(10), fieldsCons);
         fieldsCons.gridx++;
-        JLabel topDateThresholdLabel = new JLabel("YYYY-MM-DD");
+        JLabel topDateThresholdLabel = new JLabel("Top date threshold (YYYY-MM-DD)");
         fieldsPanel.add(topDateThresholdLabel, fieldsCons);
         fieldsCons.gridx = 0;
         fieldsCons.gridy++;

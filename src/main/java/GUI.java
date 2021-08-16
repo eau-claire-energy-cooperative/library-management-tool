@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 public class GUI implements ActionListener {
 
+    String osSeparator;
+
     SimpleDateFormat simpleDateFormat;
     LibraryManagementTool libraryManagementTool;
 
@@ -19,6 +21,8 @@ public class GUI implements ActionListener {
     ArrayList<JLabel> resultLabels;
 
     public GUI(LibraryManagementTool libraryManagementTool) {
+
+        this.osSeparator = getOperatingSystemSeparator();
 
         try {
             UIManager.setLookAndFeel(new FlatDarculaLaf());
@@ -73,7 +77,7 @@ public class GUI implements ActionListener {
 
         frame.setPreferredSize(new Dimension(800, 750));
 
-        java.net.URL imgURL = getClass().getResource("resources\\Library-Management-Tool-logo.jpg");
+        java.net.URL imgURL = getClass().getResource("resources" + this.osSeparator + "Library-Management-Tool-logo.jpg");
         assert imgURL != null;
         ImageIcon imageIcon = new ImageIcon();
         frame.setIconImage(imageIcon.getImage());
@@ -504,6 +508,16 @@ public class GUI implements ActionListener {
 
     }
 
+    public String getOperatingSystemSeparator() {
+
+        if(System.getProperty("os.name").charAt(0) == 'W') {
+            return "\\";
+        } else {
+            return "/";
+        }
+
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -525,10 +539,10 @@ public class GUI implements ActionListener {
                 break;
 
             case "Gen_Arch_submit":
-                System.out.println("Source: " + this.textFields.get(0).getText() + "\\"
-                + "\nDestination: " + this.textFields.get(1).getText() + "\\");
+                System.out.println("Source: " + this.textFields.get(0).getText() + this.osSeparator
+                + "\nDestination: " + this.textFields.get(1).getText() + this.osSeparator);
                 try {
-                    this.libraryManagementTool.generateArchive(this.textFields.get(0).getText() + "\\", this.textFields.get(1).getText() + "\\");
+                    this.libraryManagementTool.generateArchive(this.textFields.get(0).getText() + this.osSeparator, this.textFields.get(1).getText() + this.osSeparator);
                     this.resultLabels.get(0).setText("Success!");
                 } catch (IOException ex) {
                     this.resultLabels.get(0).setText("Failed...");
@@ -537,11 +551,11 @@ public class GUI implements ActionListener {
                 break;
 
             case "Arch_Files_submit":
-                System.out.println("Source: " + this.textFields.get(2).getText() + "\\"
-                + "\nDestination: " + this.textFields.get(3).getText() + "\\"
+                System.out.println("Source: " + this.textFields.get(2).getText() + this.osSeparator
+                + "\nDestination: " + this.textFields.get(3).getText() + this.osSeparator
                 + "\nDate Threshold: " + this.textFields.get(4).getText());
                 try {
-                    this.libraryManagementTool.archiveFiles(this.textFields.get(2).getText() + "\\", this.textFields.get(3).getText() + "\\", this.simpleDateFormat.parse(this.textFields.get(4).getText()));
+                    this.libraryManagementTool.archiveFiles(this.textFields.get(2).getText() + this.osSeparator, this.textFields.get(3).getText() + this.osSeparator, this.simpleDateFormat.parse(this.textFields.get(4).getText()));
                     this.resultLabels.get(1).setText("Success!");
                 } catch (IOException | ParseException ex) {
                     this.resultLabels.get(0).setText("Failed...");
@@ -550,7 +564,7 @@ public class GUI implements ActionListener {
                 break;
 
             case "Gen_SS_submit":
-                System.out.println("Source: " + this.textFields.get(5).getText() + "\\"
+                System.out.println("Source: " + this.textFields.get(5).getText() + this.osSeparator
                 + "\nDestination file: " + this.textFields.get(6).getText()
                 + "\nOld Date Threshold: " + this.textFields.get(7).getText()
                 + "\nNumber of Threads: " + this.textFields.get(8).getText()
@@ -558,7 +572,7 @@ public class GUI implements ActionListener {
                 + "\nMiddle Date Threshold: " + this.textFields.get(10).getText()
                 + "\nTop Date Threshold: " + this.textFields.get(11).getText());
                 try {
-                    this.libraryManagementTool.generateSpreadsheet(this.textFields.get(5).getText() + "\\", this.textFields.get(6).getText(), this.simpleDateFormat.parse(this.textFields.get(7).getText()), Integer.parseInt(this.textFields.get(8).getText()), this.simpleDateFormat.parse(this.textFields.get(9).getText()), this.simpleDateFormat.parse(this.textFields.get(10).getText()), this.simpleDateFormat.parse(this.textFields.get(11).getText()));
+                    this.libraryManagementTool.generateSpreadsheet(this.textFields.get(5).getText() + this.osSeparator, this.textFields.get(6).getText(), this.simpleDateFormat.parse(this.textFields.get(7).getText()), Integer.parseInt(this.textFields.get(8).getText()), this.simpleDateFormat.parse(this.textFields.get(9).getText()), this.simpleDateFormat.parse(this.textFields.get(10).getText()), this.simpleDateFormat.parse(this.textFields.get(11).getText()));
                     this.resultLabels.get(2).setText("Success!");
                 } catch (ParseException ex) {
                     this.resultLabels.get(0).setText("Failed...");
@@ -567,9 +581,9 @@ public class GUI implements ActionListener {
                 break;
 
             case "Del_Empt_Dirs_submit":
-                System.out.println("Source: " + this.textFields.get(12).getText() + "\\");
+                System.out.println("Source: " + this.textFields.get(12).getText() + this.osSeparator);
                 try {
-                    this.libraryManagementTool.deleteEmptyDirectories(this.textFields.get(12).getText() + "\\");
+                    this.libraryManagementTool.deleteEmptyDirectories(this.textFields.get(12).getText() + this.osSeparator);
                     this.resultLabels.get(3).setText("Success!");
                 } catch (IOException ex) {
                     this.resultLabels.get(0).setText("Failed...");
@@ -578,10 +592,10 @@ public class GUI implements ActionListener {
                 break;
 
             case "Del_File_By_Name_submit":
-                System.out.println("Source: " + this.textFields.get(13).getText() + "\\"
+                System.out.println("Source: " + this.textFields.get(13).getText() + this.osSeparator
                 + "File to delete: " + this.textFields.get(14).getText());
                 try {
-                    this.libraryManagementTool.deleteFileByName(this.textFields.get(13).getText() + "\\", this.textFields.get(14).getText());
+                    this.libraryManagementTool.deleteFileByName(this.textFields.get(13).getText() + this.osSeparator, this.textFields.get(14).getText());
                     this.resultLabels.get(4).setText("Success!");
                 } catch (IOException ex) {
                     this.resultLabels.get(0).setText("Failed...");

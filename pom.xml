@@ -70,7 +70,7 @@
                 <targetPath>resources</targetPath>
                 <filtering>true</filtering>
                 <includes>
-                    <include>**/Library-Management_Tool-logo.jpg</include>
+                    <include>**/Library-Management-Tool-logo.jpg</include>
                 </includes>
             </resource>
         </resources>

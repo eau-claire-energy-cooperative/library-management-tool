@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class GUI implements ActionListener {
 
     String osSeparator;
+    final Taskbar taskbar;
 
     SimpleDateFormat simpleDateFormat;
     LibraryManagementTool libraryManagementTool;
@@ -23,6 +24,7 @@ public class GUI implements ActionListener {
     public GUI(LibraryManagementTool libraryManagementTool) {
 
         this.osSeparator = getOperatingSystemSeparator();
+        this.taskbar = Taskbar.getTaskbar();
 
         try {
             UIManager.setLookAndFeel(new FlatDarculaLaf());
@@ -79,8 +81,10 @@ public class GUI implements ActionListener {
 
         java.net.URL imgURL = getClass().getResource("resources" + this.osSeparator + "Library-Management-Tool-logo.jpg");
         assert imgURL != null;
-        ImageIcon imageIcon = new ImageIcon();
-        frame.setIconImage(imageIcon.getImage());
+        ImageIcon imageIcon = new ImageIcon(imgURL);
+        Image iconImage = imageIcon.getImage();
+        frame.setIconImage(iconImage);
+        taskbar.setIconImage(iconImage);
 
         frame.pack();
         frame.setVisible(true);

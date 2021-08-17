@@ -84,7 +84,9 @@ public class GUI implements ActionListener {
         ImageIcon imageIcon = new ImageIcon(imgURL);
         Image iconImage = imageIcon.getImage();
         frame.setIconImage(iconImage);
-        taskbar.setIconImage(iconImage);
+        if(System.getProperty("os.name").charAt(0) == 'M') {
+            taskbar.setIconImage(iconImage);
+        }
 
         frame.pack();
         frame.setVisible(true);

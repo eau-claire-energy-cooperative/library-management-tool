@@ -81,13 +81,18 @@ public class GUI implements ActionListener {
 
         frame.setPreferredSize(new Dimension(800, 800));
 
-        java.net.URL imgURL = getClass().getResource("resources" + this.osSeparator + "Library-Management-Tool-logo.jpg");
-        assert imgURL != null;
-        ImageIcon imageIcon = new ImageIcon(imgURL);
-        Image iconImage = imageIcon.getImage();
-        frame.setIconImage(iconImage);
-        if(System.getProperty("os.name").charAt(0) == 'M') {
+        ImageIcon imageIcon;
+        Image iconImage;
+        if(System.getProperty("os.name").charAt(0) != 'W') {
+            java.net.URL imgURL = getClass().getResource("resources" + this.osSeparator + "Library-Management-Tool-logo.jpg");
+            assert imgURL != null;
+            imageIcon = new ImageIcon(imgURL);
+            iconImage = imageIcon.getImage();
             taskbar.setIconImage(iconImage);
+        } else {
+            imageIcon = new ImageIcon("resources/Library-Management-Tool-logo.jpg");
+            iconImage = imageIcon.getImage();
+            frame.setIconImage(iconImage);
         }
 
         frame.pack();

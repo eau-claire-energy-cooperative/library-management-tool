@@ -36,7 +36,6 @@
         </dependency>
     </dependencies>
 
-    <!--
     <build>
         <sourceDirectory>src</sourceDirectory>
 
@@ -76,6 +75,5 @@
             </resource>
         </resources>
     </build>
-    -->
 
 </project>

@@ -19,6 +19,7 @@ public class GUI implements ActionListener {
 
     ArrayList<JFileChooser> fileChoosers;
     ArrayList<JTextField> textFields;
+    ArrayList<JCheckBox> checkBoxes;
     ArrayList<JLabel> resultLabels;
 
     public GUI(LibraryManagementTool libraryManagementTool) {
@@ -38,6 +39,7 @@ public class GUI implements ActionListener {
 
         this.fileChoosers = new ArrayList<>();
         this.textFields = new ArrayList<>();
+        this.checkBoxes = new ArrayList<>();
         this.resultLabels = new ArrayList<>();
 
         JFrame frame = new JFrame("Library Management Tool");
@@ -77,7 +79,7 @@ public class GUI implements ActionListener {
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        frame.setPreferredSize(new Dimension(800, 750));
+        frame.setPreferredSize(new Dimension(800, 800));
 
         java.net.URL imgURL = getClass().getResource("resources" + this.osSeparator + "Library-Management-Tool-logo.jpg");
         assert imgURL != null;
@@ -372,6 +374,19 @@ public class GUI implements ActionListener {
         fieldsPanel.add(Box.createVerticalStrut(10), fieldsCons);
         fieldsCons.gridy++;
 
+        JCheckBox compareNamesOnly = new JCheckBox();
+        this.checkBoxes.add(compareNamesOnly);
+        fieldsPanel.add(compareNamesOnly, fieldsCons);
+        fieldsCons.gridx++;
+        fieldsPanel.add(Box.createHorizontalStrut(10), fieldsCons);
+        fieldsCons.gridx++;
+        JLabel compareNamesOnlyLabel = new JLabel("Compare file names only?");
+        fieldsPanel.add(compareNamesOnlyLabel, fieldsCons);
+        fieldsCons.gridx = 0;
+        fieldsCons.gridy++;
+        fieldsPanel.add(Box.createVerticalStrut(10), fieldsCons);
+        fieldsCons.gridy++;
+
         JLabel resultLabel = new JLabel("Result");
         this.resultLabels.add(resultLabel);
         fieldsPanel.add(resultLabel, fieldsCons);
@@ -578,7 +593,7 @@ public class GUI implements ActionListener {
                 + "\nMiddle Date Threshold: " + this.textFields.get(10).getText()
                 + "\nTop Date Threshold: " + this.textFields.get(11).getText());
                 try {
-                    this.libraryManagementTool.generateSpreadsheet(this.textFields.get(5).getText() + this.osSeparator, this.textFields.get(6).getText(), this.simpleDateFormat.parse(this.textFields.get(7).getText()), Integer.parseInt(this.textFields.get(8).getText()), this.simpleDateFormat.parse(this.textFields.get(9).getText()), this.simpleDateFormat.parse(this.textFields.get(10).getText()), this.simpleDateFormat.parse(this.textFields.get(11).getText()));
+                    this.libraryManagementTool.generateSpreadsheet(this.textFields.get(5).getText() + this.osSeparator, this.textFields.get(6).getText(), this.simpleDateFormat.parse(this.textFields.get(7).getText()), Integer.parseInt(this.textFields.get(8).getText()), this.simpleDateFormat.parse(this.textFields.get(9).getText()), this.simpleDateFormat.parse(this.textFields.get(10).getText()), this.simpleDateFormat.parse(this.textFields.get(11).getText()), this.checkBoxes.get(0).isSelected());
                     this.resultLabels.get(2).setText("Success!");
                 } catch (ParseException ex) {
                     this.resultLabels.get(0).setText("Failed...");

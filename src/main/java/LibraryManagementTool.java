@@ -52,7 +52,7 @@ public class LibraryManagementTool {
      * @param middleDateThreshold The date through which files are highlighted orange and considered second oldest.
      * @param topDateThreshold The date through which files are highlighted yellow and considered least oldest.
      */
-    public void generateSpreadsheet(String sourcePath, String destPath, Date dateThreshold, int numThreads, Date bottomDateThreshold, Date middleDateThreshold, Date topDateThreshold) {
+    public void generateSpreadsheet(String sourcePath, String destPath, Date dateThreshold, int numThreads, Date bottomDateThreshold, Date middleDateThreshold, Date topDateThreshold, boolean compareNamesOnly) {
 
         FileLibrary fileLibrary = new FileLibrary();
         Spreadsheet spreadsheet = new Spreadsheet();
@@ -75,9 +75,10 @@ public class LibraryManagementTool {
             generateSpreadsheet.setConditionalFormatting(1, bottomDateThreshold, middleDateThreshold, topDateThreshold);
         }
 
-        fileLibrary.performComparisons(numThreads);
+        fileLibrary.performComparisons(numThreads, compareNamesOnly);
         fileLibrary.generateResults();
         generateSpreadsheet.fillSpreadsheetWithSets(fileLibrary.getIdenticalSets(), "Duplicate files");
+        generateSpreadsheet.fillSpreadsheetWithSets(fileLibrary.getSimilarNameSets(), "Similar name files");
 
         generateSpreadsheet.saveSpreadsheet(destPath);
 

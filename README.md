@@ -52,6 +52,8 @@ To use the Library Management Tool from the "Client" class or jar file, use the 
 4. [filepath of source location]
 5. [filepath of source location]   [name of file to delete]
 
+To bypass those fields which are optional, enter "null" as a value for each.
+
 ## Syntax
 
 Dates are given in the following format:  

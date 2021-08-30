@@ -7,7 +7,7 @@ public class test {
         FileLibrary fileLibrary = new FileLibrary();
         fileLibrary.walk("/Users/spencerkeith/Desktop/Test");
 
-        fileLibrary.performComparisons(4, false);
+        //fileLibrary.performComparisons(4, false);
         fileLibrary.generateResults();
 
     }

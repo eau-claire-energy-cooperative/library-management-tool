@@ -81,6 +81,7 @@ public class GUI implements ActionListener {
 
         frame.setPreferredSize(new Dimension(800, 800));
 
+        /* Code which adds logo to taskbar and window. Because of the way the jar is built, this code must be commented out when running this program NOT as a jar.
         ImageIcon imageIcon;
         Image iconImage;
         if(System.getProperty("os.name").charAt(0) != 'W') {
@@ -94,6 +95,7 @@ public class GUI implements ActionListener {
             iconImage = imageIcon.getImage();
             frame.setIconImage(iconImage);
         }
+        */
 
         frame.pack();
         frame.setVisible(true);
@@ -379,13 +381,32 @@ public class GUI implements ActionListener {
         fieldsPanel.add(Box.createVerticalStrut(10), fieldsCons);
         fieldsCons.gridy++;
 
-        JCheckBox compareNamesOnly = new JCheckBox();
-        this.checkBoxes.add(compareNamesOnly);
-        fieldsPanel.add(compareNamesOnly, fieldsCons);
+        JPanel checkboxesPanel = new JPanel();
+        checkboxesPanel.setLayout(new GridBagLayout());
+        GridBagConstraints cBPCons = new GridBagConstraints();
+        cBPCons.gridx = 0;
+        NoneSelectedButtonGroup checkboxGroup = new NoneSelectedButtonGroup();
+        JCheckBox doCompareNames = new JCheckBox("File names");
+        this.checkBoxes.add(doCompareNames);
+        checkboxesPanel.add(doCompareNames, cBPCons);
+        cBPCons.gridx++;
+        checkboxesPanel.add(Box.createHorizontalStrut(20), cBPCons);
+        cBPCons.gridx++;
+        JCheckBox doCompareBytes = new JCheckBox("Bytes");
+        this.checkBoxes.add(doCompareBytes);
+        checkboxGroup.add(doCompareBytes);
+        checkboxesPanel.add(doCompareBytes, cBPCons);
+        cBPCons.gridx++;
+        JCheckBox doCompareContents = new JCheckBox("Contents");
+        this.checkBoxes.add(doCompareContents);
+        checkboxGroup.add(doCompareContents);
+        checkboxesPanel.add(doCompareContents, cBPCons);
+        cBPCons.gridx++;
+        fieldsPanel.add(checkboxesPanel, fieldsCons);
         fieldsCons.gridx++;
         fieldsPanel.add(Box.createHorizontalStrut(10), fieldsCons);
         fieldsCons.gridx++;
-        JLabel compareNamesOnlyLabel = new JLabel("Compare file names only?");
+        JLabel compareNamesOnlyLabel = new JLabel("Comparison type");
         fieldsPanel.add(compareNamesOnlyLabel, fieldsCons);
         fieldsCons.gridx = 0;
         fieldsCons.gridy++;
@@ -596,9 +617,12 @@ public class GUI implements ActionListener {
                 + "\nNumber of Threads: " + this.textFields.get(8).getText()
                 + "\nBottom Date Threshold: " + this.textFields.get(9).getText()
                 + "\nMiddle Date Threshold: " + this.textFields.get(10).getText()
-                + "\nTop Date Threshold: " + this.textFields.get(11).getText());
+                + "\nTop Date Threshold: " + this.textFields.get(11).getText()
+                + "\nCompare names: " + this.checkBoxes.get(0).isSelected()
+                + "\nCompare bytes: " + this.checkBoxes.get(1).isSelected()
+                + "\nCompare bytes AND contents: " + this.checkBoxes.get(2).isSelected());
                 try {
-                    this.libraryManagementTool.generateSpreadsheet(this.textFields.get(5).getText() + this.osSeparator, this.textFields.get(6).getText(), this.simpleDateFormat.parse(this.textFields.get(7).getText()), Integer.parseInt(this.textFields.get(8).getText()), this.simpleDateFormat.parse(this.textFields.get(9).getText()), this.simpleDateFormat.parse(this.textFields.get(10).getText()), this.simpleDateFormat.parse(this.textFields.get(11).getText()), this.checkBoxes.get(0).isSelected());
+                    this.libraryManagementTool.generateSpreadsheet(this.textFields.get(5).getText() + this.osSeparator, this.textFields.get(6).getText(), this.simpleDateFormat.parse(this.textFields.get(7).getText()), Integer.parseInt(this.textFields.get(8).getText()), this.simpleDateFormat.parse(this.textFields.get(9).getText()), this.simpleDateFormat.parse(this.textFields.get(10).getText()), this.simpleDateFormat.parse(this.textFields.get(11).getText()), this.checkBoxes.get(0).isSelected(), this.checkBoxes.get(1).isSelected(), this.checkBoxes.get(2).isSelected());
                     this.resultLabels.get(2).setText("Success!");
                 } catch (ParseException ex) {
                     this.resultLabels.get(0).setText("Failed...");
@@ -631,6 +655,19 @@ public class GUI implements ActionListener {
 
         }
 
+    }
+
+}
+
+class NoneSelectedButtonGroup extends ButtonGroup {
+
+    @Override
+    public void setSelected(ButtonModel model, boolean selected) {
+        if(selected) {
+            super.setSelected(model, true);
+        } else {
+            clearSelection();
+        }
     }
 
 }

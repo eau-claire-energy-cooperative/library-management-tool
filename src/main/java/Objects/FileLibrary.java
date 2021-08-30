@@ -14,12 +14,14 @@ public class FileLibrary {
     private final ArrayList<File> filesArrayList;
     private final ArrayList<ComparableFile> comparableFilesArrayList;
     private final ArrayList<ArrayList<ComparableFile>> identicalSets;
+    private final ArrayList<ArrayList<ComparableFile>> similarContentSets;
     private final ArrayList<ArrayList<ComparableFile>> similarNameSets;
 
     public FileLibrary() {
         this.filesArrayList = new ArrayList<>();
         this.comparableFilesArrayList = new ArrayList<>();
         this.identicalSets = new ArrayList<>();
+        this.similarContentSets = new ArrayList<>();
         this.similarNameSets = new ArrayList<>();
     }
 
@@ -59,7 +61,7 @@ public class FileLibrary {
      * Compares files from ComparableFile ArrayList forward using threading.
      * @param numThreads The number of threads a user wants to utilize for comparisons.
      */
-    public void performComparisons(int numThreads, boolean compareNamesOnly) {
+    public void performComparisons(int numThreads, boolean doCompareNames, boolean doCompareBytes, boolean doCompareContents) {
 
         Thread[] threads = new Thread[numThreads];
         int threadIndex = 0;
@@ -81,7 +83,7 @@ public class FileLibrary {
                         //Checks if threads are available
                         while(true) {
                             if (threads[threadIndex % numThreads] == null || !threads[threadIndex % numThreads].isAlive()) {
-                                threads[threadIndex % numThreads] = new Thread(new CompareFiles(compareNamesOnly, new StringSimilarityServiceImpl(strategy), FileLibrary.this.comparableFilesArrayList.get(i), FileLibrary.this.comparableFilesArrayList.get(j)));
+                                threads[threadIndex % numThreads] = new Thread(new CompareFiles(new StringSimilarityServiceImpl(strategy), FileLibrary.this.comparableFilesArrayList.get(i), FileLibrary.this.comparableFilesArrayList.get(j), doCompareNames, doCompareBytes, doCompareContents));
                                 threads[threadIndex % numThreads].start();
                                 threadIndex++;
                                 break;
@@ -95,6 +97,17 @@ public class FileLibrary {
             }
 
         }
+
+        boolean threadsCompleted;
+        do {
+            threadsCompleted = true;
+            for (int i = 0; i <= threads.length - 1; i++) {
+                if (threads[i].isAlive()) {
+                    threadsCompleted = false;
+                    break;
+                }
+            }
+        } while (!threadsCompleted);
 
     }
 
@@ -128,6 +141,29 @@ public class FileLibrary {
 
                         //Adds ComparableFile to identicalSet, and sets flag to false
                         identicalSets.get(identicalSets.size() - 1).add(FileLibrary.this.comparableFilesArrayList.get(j));
+                        FileLibrary.this.comparableFilesArrayList.get(j).setFlag(false);
+
+                    }
+
+                }
+
+            } else if(FileLibrary.this.comparableFilesArrayList.get(i).getContentsSimilarPointer() > -1 && FileLibrary.this.comparableFilesArrayList.get(i).getFlag()) {
+
+                //Create new similarNameSet ArrayList<> and add pointing and pointed at files
+                similarContentSets.add(new ArrayList<>());
+                similarContentSets.get(similarContentSets.size() - 1).add(FileLibrary.this.comparableFilesArrayList.get(FileLibrary.this.comparableFilesArrayList.get(i).getContentsSimilarPointer()));
+                similarContentSets.get(similarContentSets.size() - 1).add(FileLibrary.this.comparableFilesArrayList.get(i));
+                //Sets index to that of similar name ComparableFile
+                index = FileLibrary.this.comparableFilesArrayList.get(i).getContentsSimilarPointer();
+
+                //For each subsequent ComparableFile forward
+                for(int j = i + 1; j <= FileLibrary.this.comparableFilesArrayList.size() - 1; j++) {
+
+                    //Checks if each pointer directs toward the index, and if it has not already been analyzed.
+                    if(FileLibrary.this.comparableFilesArrayList.get(j).getContentsSimilarPointer() == index && FileLibrary.this.comparableFilesArrayList.get(j).getFlag()) {
+
+                        //Adds ComparableFile to identicalSet, and sets flag to false
+                        similarContentSets.get(similarContentSets.size() - 1).add(FileLibrary.this.comparableFilesArrayList.get(j));
                         FileLibrary.this.comparableFilesArrayList.get(j).setFlag(false);
 
                     }
@@ -174,6 +210,20 @@ public class FileLibrary {
 
         }
 
+        //Prints similarContentSets
+        for(int i = 0; i <= similarContentSets.size() - 1; i++) {
+
+            System.out.print("[" + similarContentSets.get(i).get(0).getFile().getName());
+            for(int j = 1; j <= similarContentSets.get(i).size() - 1; j++) {
+
+                System.out.print(" -+-> " + similarContentSets.get(i).get(j).getFile().getName());
+
+            }
+            System.out.print("]\n");
+
+        }
+
+
         //Prints similarNameSets
         for(int i = 0; i <= similarNameSets.size() - 1; i++) {
 
@@ -192,6 +242,8 @@ public class FileLibrary {
     public ArrayList<File> getFilesArrayList() { return filesArrayList; }
 
     public ArrayList<ArrayList<ComparableFile>> getIdenticalSets() { return identicalSets; }
+
+    public ArrayList<ArrayList<ComparableFile>> getSimilarContentSets() { return similarContentSets; }
 
     public ArrayList<ArrayList<ComparableFile>> getSimilarNameSets() { return similarNameSets; }
 

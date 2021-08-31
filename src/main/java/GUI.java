@@ -19,6 +19,7 @@ public class GUI implements ActionListener {
 
     ArrayList<JFileChooser> fileChoosers;
     ArrayList<JTextField> textFields;
+    ArrayList<JCheckBox> checkBoxes;
     ArrayList<JLabel> resultLabels;
 
     public GUI(LibraryManagementTool libraryManagementTool) {
@@ -38,6 +39,7 @@ public class GUI implements ActionListener {
 
         this.fileChoosers = new ArrayList<>();
         this.textFields = new ArrayList<>();
+        this.checkBoxes = new ArrayList<>();
         this.resultLabels = new ArrayList<>();
 
         JFrame frame = new JFrame("Library Management Tool");
@@ -77,16 +79,23 @@ public class GUI implements ActionListener {
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        frame.setPreferredSize(new Dimension(800, 750));
+        frame.setPreferredSize(new Dimension(800, 800));
 
-        java.net.URL imgURL = getClass().getResource("resources" + this.osSeparator + "Library-Management-Tool-logo.jpg");
-        assert imgURL != null;
-        ImageIcon imageIcon = new ImageIcon(imgURL);
-        Image iconImage = imageIcon.getImage();
-        frame.setIconImage(iconImage);
-        if(System.getProperty("os.name").charAt(0) == 'M') {
+        /* Code which adds logo to taskbar and window. Because of the way the jar is built, this code must be commented out when running this program NOT as a jar.
+        ImageIcon imageIcon;
+        Image iconImage;
+        if(System.getProperty("os.name").charAt(0) != 'W') {
+            java.net.URL imgURL = getClass().getResource("resources" + this.osSeparator + "Library-Management-Tool-logo.jpg");
+            assert imgURL != null;
+            imageIcon = new ImageIcon(imgURL);
+            iconImage = imageIcon.getImage();
             taskbar.setIconImage(iconImage);
+        } else {
+            imageIcon = new ImageIcon("resources/Library-Management-Tool-logo.jpg");
+            iconImage = imageIcon.getImage();
+            frame.setIconImage(iconImage);
         }
+        */
 
         frame.pack();
         frame.setVisible(true);
@@ -372,6 +381,38 @@ public class GUI implements ActionListener {
         fieldsPanel.add(Box.createVerticalStrut(10), fieldsCons);
         fieldsCons.gridy++;
 
+        JPanel checkboxesPanel = new JPanel();
+        checkboxesPanel.setLayout(new GridBagLayout());
+        GridBagConstraints cBPCons = new GridBagConstraints();
+        cBPCons.gridx = 0;
+        NoneSelectedButtonGroup checkboxGroup = new NoneSelectedButtonGroup();
+        JCheckBox doCompareNames = new JCheckBox("File names");
+        this.checkBoxes.add(doCompareNames);
+        checkboxesPanel.add(doCompareNames, cBPCons);
+        cBPCons.gridx++;
+        checkboxesPanel.add(Box.createHorizontalStrut(20), cBPCons);
+        cBPCons.gridx++;
+        JCheckBox doCompareBytes = new JCheckBox("Bytes");
+        this.checkBoxes.add(doCompareBytes);
+        checkboxGroup.add(doCompareBytes);
+        checkboxesPanel.add(doCompareBytes, cBPCons);
+        cBPCons.gridx++;
+        JCheckBox doCompareContents = new JCheckBox("Contents");
+        this.checkBoxes.add(doCompareContents);
+        checkboxGroup.add(doCompareContents);
+        checkboxesPanel.add(doCompareContents, cBPCons);
+        cBPCons.gridx++;
+        fieldsPanel.add(checkboxesPanel, fieldsCons);
+        fieldsCons.gridx++;
+        fieldsPanel.add(Box.createHorizontalStrut(10), fieldsCons);
+        fieldsCons.gridx++;
+        JLabel compareNamesOnlyLabel = new JLabel("Comparison type");
+        fieldsPanel.add(compareNamesOnlyLabel, fieldsCons);
+        fieldsCons.gridx = 0;
+        fieldsCons.gridy++;
+        fieldsPanel.add(Box.createVerticalStrut(10), fieldsCons);
+        fieldsCons.gridy++;
+
         JLabel resultLabel = new JLabel("Result");
         this.resultLabels.add(resultLabel);
         fieldsPanel.add(resultLabel, fieldsCons);
@@ -576,9 +617,12 @@ public class GUI implements ActionListener {
                 + "\nNumber of Threads: " + this.textFields.get(8).getText()
                 + "\nBottom Date Threshold: " + this.textFields.get(9).getText()
                 + "\nMiddle Date Threshold: " + this.textFields.get(10).getText()
-                + "\nTop Date Threshold: " + this.textFields.get(11).getText());
+                + "\nTop Date Threshold: " + this.textFields.get(11).getText()
+                + "\nCompare names: " + this.checkBoxes.get(0).isSelected()
+                + "\nCompare bytes: " + this.checkBoxes.get(1).isSelected()
+                + "\nCompare bytes AND contents: " + this.checkBoxes.get(2).isSelected());
                 try {
-                    this.libraryManagementTool.generateSpreadsheet(this.textFields.get(5).getText() + this.osSeparator, this.textFields.get(6).getText(), this.simpleDateFormat.parse(this.textFields.get(7).getText()), Integer.parseInt(this.textFields.get(8).getText()), this.simpleDateFormat.parse(this.textFields.get(9).getText()), this.simpleDateFormat.parse(this.textFields.get(10).getText()), this.simpleDateFormat.parse(this.textFields.get(11).getText()));
+                    this.libraryManagementTool.generateSpreadsheet(this.textFields.get(5).getText() + this.osSeparator, this.textFields.get(6).getText(), this.simpleDateFormat.parse(this.textFields.get(7).getText()), Integer.parseInt(this.textFields.get(8).getText()), this.simpleDateFormat.parse(this.textFields.get(9).getText()), this.simpleDateFormat.parse(this.textFields.get(10).getText()), this.simpleDateFormat.parse(this.textFields.get(11).getText()), this.checkBoxes.get(0).isSelected(), this.checkBoxes.get(1).isSelected(), this.checkBoxes.get(2).isSelected());
                     this.resultLabels.get(2).setText("Success!");
                 } catch (ParseException ex) {
                     this.resultLabels.get(0).setText("Failed...");
@@ -611,6 +655,19 @@ public class GUI implements ActionListener {
 
         }
 
+    }
+
+}
+
+class NoneSelectedButtonGroup extends ButtonGroup {
+
+    @Override
+    public void setSelected(ButtonModel model, boolean selected) {
+        if(selected) {
+            super.setSelected(model, true);
+        } else {
+            clearSelection();
+        }
     }
 
 }

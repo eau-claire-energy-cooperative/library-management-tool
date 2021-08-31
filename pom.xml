@@ -6,7 +6,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>Library-Management-Tool</artifactId>
-    <version>2.0.1</version>
+    <version>2.0.4</version>
 
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
@@ -36,6 +36,7 @@
         </dependency>
     </dependencies>
 
+    <!--
     <build>
         <sourceDirectory>src</sourceDirectory>
 
@@ -75,4 +76,6 @@
             </resource>
         </resources>
     </build>
+    -->
+
 </project>

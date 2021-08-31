@@ -25,6 +25,7 @@ public class LibraryManagementTool {
 
         GenerateArchive generateArchive = new GenerateArchive(sourcePath, destPath);
         System.out.println(generateArchive.walk(sourcePath) + " archive folders created");
+        System.out.println("Generate archive completed!");
 
     }
 
@@ -39,6 +40,7 @@ public class LibraryManagementTool {
 
         ArchiveFiles archiveFiles = new ArchiveFiles(sourcePath, destPath, dateThreshold);
         System.out.println(archiveFiles.walk(sourcePath) + " total files archived");
+        System.out.println("Archive files completed!");
 
     }
 
@@ -52,7 +54,7 @@ public class LibraryManagementTool {
      * @param middleDateThreshold The date through which files are highlighted orange and considered second oldest.
      * @param topDateThreshold The date through which files are highlighted yellow and considered least oldest.
      */
-    public void generateSpreadsheet(String sourcePath, String destPath, Date dateThreshold, int numThreads, Date bottomDateThreshold, Date middleDateThreshold, Date topDateThreshold) {
+    public void generateSpreadsheet(String sourcePath, String destPath, Date dateThreshold, int numThreads, Date bottomDateThreshold, Date middleDateThreshold, Date topDateThreshold, boolean doCompareNames, boolean doCompareBytes, boolean doCompareContents) {
 
         FileLibrary fileLibrary = new FileLibrary();
         Spreadsheet spreadsheet = new Spreadsheet();
@@ -75,11 +77,14 @@ public class LibraryManagementTool {
             generateSpreadsheet.setConditionalFormatting(1, bottomDateThreshold, middleDateThreshold, topDateThreshold);
         }
 
-        fileLibrary.performComparisons(numThreads);
+        fileLibrary.performComparisons(numThreads, doCompareNames, doCompareBytes, doCompareContents);
         fileLibrary.generateResults();
         generateSpreadsheet.fillSpreadsheetWithSets(fileLibrary.getIdenticalSets(), "Duplicate files");
+        generateSpreadsheet.fillSpreadsheetWithSets(fileLibrary.getSimilarContentSets(), "Similar content files");
+        generateSpreadsheet.fillSpreadsheetWithSets(fileLibrary.getSimilarNameSets(), "Similar name files");
 
         generateSpreadsheet.saveSpreadsheet(destPath);
+        System.out.println("Generate spreadsheet completed!");
 
     }
 
@@ -92,6 +97,7 @@ public class LibraryManagementTool {
 
         DeleteEmptyDirectories deleteEmptyDirectories = new DeleteEmptyDirectories();
         deleteEmptyDirectories.walk(sourcePath);
+        System.out.println("Delete empty directories completed!");
 
     }
 
@@ -105,6 +111,7 @@ public class LibraryManagementTool {
 
         DeleteFileByName deleteFileByName = new DeleteFileByName();
         System.out.println(deleteFileByName.walk(path, fileName) + " total files deleted");
+        System.out.println("Delete file by name completed!");
 
     }
 

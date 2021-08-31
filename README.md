@@ -7,7 +7,7 @@ Developed with Java 16.
 Eau Claire Energy Cooperative migrated its employee files from a local network drive to Microsoft OneDrive. During the process, IT Intern Spencer Keith thought it potentially helpful to write a program that could assist with this process by performing analysis on company files, to distinguish which files should be migrated, and which could be left behind.
 
 ## Install
-To install, simply clone the repository or download the source code .zip file.
+To install, simply clone the repository, download the source code .zip file, or download the release jar file.
 
 ## Dependencies
 This program uses the Apache POI API. To use this API, add the following to your pom.xml file:  
@@ -29,11 +29,13 @@ This program uses the Apache POI API. To use this API, add the following to your
 As of August 3, 2021, the program can perform 5 different functions:
 1. Generate an empty, identical duplicate file structure of a file structure at a specified location for archiving.
 2. Populate a generated archive with files last modified before a given date.
-3. Generate an informational Excel Workbook with three sheets. The first lists all files in a given location with their filepath, size, and last modified date. The final of these is conditionally highlighted according to given threshold dates. The second lists all files last modifed before a given date ("old" files). The third lists all files with identical duplicates in the specified location.
+3. Generate an informational Excel Workbook with five sheets. The first lists all files in a given location with their filepath, size, and last modified date conditionally highlighted according to given threshold dates. The second lists all files last modifed before a given date ("old" files). The third lists all files with identical duplicates in the specified location. The fourth lists all Word and Excel files with similar contents. The last lists all files with similar file names.
 4. Delete empty directories within a specified location.
 5. Delete all instances of a given file, by name.
 
 The Library Management Tool is usable in two different ways. First, a "Client" class exists, which can run the functions using a GUI. When using the jar file, this is how the program is executed. Second, if implementing the Library Management Tool into code, any of the individual functions and objects can be accessed individually, and a "LibraryManagementTool" class exists which can run each function centrally as methods. The latter of these code implementations is what I would personally recommend for usage of that kind.
+
+*\*NOTE\** No duplication exists between "Duplicate files", "Similar content files", and "Similar name files". If two Word files, for example, were identical in name and contents, those files would be listed ONLY under "Duplicate files", because identical byte contents is the highlest level of comparable similarity. Files will be listed under their highest level of similarity.
 
 ```java
 public static void main(String[] args) {
@@ -46,9 +48,11 @@ public static void main(String[] args) {
 To use the Library Management Tool from the "Client" class or jar file, use the following field entries:
 1. [filepath of source location]   [filepath of archive destination]
 2. [filepath of source location]   [filepath of archive destination]   [last modified date threshold]
-3. [filepath of source location]   [filepath of output spreadsheet]   ["old" date threshold]   [number of threads to use]   *OPTIONAL*[red-highlighted "oldest" date threshold]   *OPTIONAL*[orange-highlighted "second-oldest" date threshold]   *OPTIONAL*[yellow-highlighted "newest-oldest" date threshold]
+3. [filepath of source location]   [filepath of output spreadsheet]   ["old" date threshold]   [number of threads to use]   *OPTIONAL*[red-highlighted "oldest" date threshold]   *OPTIONAL*[orange-highlighted "second-oldest" date threshold]   *OPTIONAL*[yellow-highlighted "newest-oldest" date threshold]   [do compare file names]   [do compare bytes]   [do compare contents (bytes and Word/Excel contents)]
 4. [filepath of source location]
 5. [filepath of source location]   [name of file to delete]
+
+To bypass those fields which are optional, enter "null" as a value for each.
 
 ## Syntax
 
